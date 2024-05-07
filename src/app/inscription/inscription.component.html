@@ -1,0 +1,67 @@
+<!-- inscription.component.html -->
+<div class="container">
+    <h1>Inscription</h1>
+    <form #f1="ngForm" #formData="ngForm">
+        <div class="form-group">
+            <label for="login">Login</label>
+            <input type="text" class="form-control" id="login" name="login" ngModel placeholder="Entrez votre login" 
+                #nom="ngModel" required minlength="3">
+            <div *ngIf="nom.invalid && (nom.dirty || nom.touched)" class="text-danger">
+            <div *ngIf="nom.errors?.['required']">
+                    Ce champ est obligatoire
+                </div>
+                <div *ngIf="nom.errors?.['minlength']">
+                    Le login doit contenir au moins 3 caractères
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" id="password" name="password" ngModel password placeholder="Entrez votre mot de passe"
+                #passwordInput="ngModel" required>
+            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger">
+                <div *ngIf="passwordInput.errors?.['required']">
+                    Ce champ est obligatoire
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary"  (click)="onAddStudent(formData)"[disabled]= "f1.invalid">Add Student</button>
+    </form>
+</div>
+
+
+
+<div class="container mt-4">
+    <h2>Liste des étudiants</h2>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let etudiant of data">
+            <!-- Affichage des informations de l'étudiant -->
+            <div class="d-flex justify-content-between align-items-center">
+                <span>{{ etudiant.login }}</span>
+                <div>
+                    <!-- Bouton pour supprimer l'étudiant -->
+                    <button class="btn btn-danger mr-2" (click)="onDeleteStudent((etudiant._id))">Supprimer</button>
+                    <!-- Bouton pour modifier l'étudiant -->
+                    <button class="btn btn-warning" (click)="onEditStudent(etudiant)">Modifier</button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- inscription.component.html -->
+<div *ngIf="showEditForm" class="centered-form fade-in">
+    <h2>Modifier l'étudiant</h2>
+    <form (ngSubmit)="onSubmitEditForm()" #editForm="ngForm">
+      <div class="form-group">
+        <label for="editLogin">Login</label>
+        <input type="text" class="form-control" id="editLogin" name="editLogin" [(ngModel)]="editedStudent.login" required>
+      </div>
+      <div class="form-group">
+        <label for="editPassword">Mot de passe</label>
+        <input type="password" class="form-control" id="editPassword" name="editPassword" [(ngModel)]="editedStudent.password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Valider</button>
+    </form>
+  </div>
+  
